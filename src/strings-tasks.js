@@ -37,8 +37,8 @@ function getStringLength(value) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return Object.prototype.toString.call(value) === '[object String]';
 }
 
 /**
@@ -146,8 +146,12 @@ function repeatString(str, times) {
  *   removeFirstOccurrences('I like legends', 'end') => 'I like legs'.
  *   removeFirstOccurrences('ABABAB', 'BA') => 'ABAB'.
  */
-function removeFirstOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeFirstOccurrences(str, value) {
+  const index = str.indexOf(value);
+  if (index === -1) {
+    return str;
+  }
+  return str.substring(0, index) + str.substring(index + value.length);
 }
 
 /**
@@ -162,8 +166,12 @@ function removeFirstOccurrences(/* str, value */) {
  *   removeLastOccurrences('I like legends', 'end') => 'I like legs'.
  *   removeLastOccurrences('ABABAB', 'BA') => 'ABAB'.
  */
-function removeLastOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeLastOccurrences(str, value) {
+  const index = str.lastIndexOf(value);
+  if (index === -1) {
+    return str;
+  }
+  return str.substring(0, index) + str.substring(index + value.length);
 }
 
 /**
@@ -178,12 +186,11 @@ function removeLastOccurrences(/* str, value */) {
  *   sumOfCodes('') => 0
  *   sumOfCodes() => 0
  */
-function sumOfCodes(/* str */) {
-  // if (str.length) {
-  //   return Array.from(str).reduce((acc, char) => acc + char.charCodeAt(), 0);
-  // }
-  // return '';
-  throw new Error('Not implemented');
+function sumOfCodes(str) {
+  if (str) {
+    return Array.from(str).reduce((acc, char) => acc + char.charCodeAt(), 0);
+  }
+  return 0;
 }
 
 /**
@@ -229,6 +236,9 @@ function endsWith(str, substr) {
  *   formatTime(0, 45) => "00:45"
  *   formatTime(0, 0) => "00:00"
  */
+// return `${minutes < 10 ? `0${minutes}` : minutes}:${
+//   seconds < 10 ? `0${seconds}` : seconds
+// }`;
 function formatTime(/* minutes, seconds */) {
   throw new Error('Not implemented');
 }
@@ -292,8 +302,15 @@ function containsSubstring(str, substring) {
  *   countVowels('aEiOu') => 5
  *   countVowels('XYZ') => 1
  */
-function countVowels(/* str */) {
-  throw new Error('Not implemented');
+function countVowels(str) {
+  const vowels = ['a', 'e', 'i', 'o', 'u', 'y', 'A', 'E', 'I', 'O', 'U', 'Y'];
+  const res = [];
+  str.split('').forEach((el) => {
+    if (vowels.indexOf(el) !== -1) {
+      res.push(el);
+    }
+  });
+  return res.length;
 }
 
 /**
@@ -309,8 +326,9 @@ function countVowels(/* str */) {
  *   isPalindrome('apple') => false
  *   isPalindrome('No lemon, no melon') => true
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  const resStr = str.toLowerCase().replace(/[^a-zа-я0-9]+/g, '');
+  return resStr.split('').reverse().join('') === resStr;
 }
 
 /**
@@ -341,8 +359,12 @@ function findLongestWord(sentence) {
  *   reverseWords('Hello World') => 'olleH dlroW'
  *   reverseWords('The Quick Brown Fox') => 'ehT kciuQ nworB xoF'
  */
-function reverseWords(/* str */) {
-  throw new Error('Not implemented');
+function reverseWords(str) {
+  const arr = str.split(' ');
+  const res = arr.map((item) => {
+    return item.split('').reverse().join('');
+  });
+  return res.join(' ');
 }
 
 /**
@@ -356,8 +378,15 @@ function reverseWords(/* str */) {
  *   invertCase('JavaScript is Fun') => 'jAVAsCRIPT IS fUN'
  *   invertCase('12345') => '12345'
  */
-function invertCase(/* str */) {
-  throw new Error('Not implemented');
+function invertCase(str) {
+  const arr = str.split('');
+  const res = arr.map((el) => {
+    if (el === el.toLowerCase()) {
+      return el.toUpperCase();
+    }
+    return el.toLowerCase();
+  });
+  return res.join('');
 }
 
 /**
@@ -373,8 +402,8 @@ function invertCase(/* str */) {
  *   getStringFromTemplate('John','Doe') => 'Hello, John Doe!'
  *   getStringFromTemplate('Chuck','Norris') => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -387,8 +416,11 @@ function getStringFromTemplate(/* firstName, lastName */) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const arr = value.split(',');
+  const str = arr[1].trimStart();
+  const result = str.slice(0, -1);
+  return result;
 }
 
 /**
@@ -402,8 +434,8 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.slice(1, -1);
 }
 
 /**
@@ -421,8 +453,9 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  const res = str.split(';');
+  return res;
 }
 
 /**
